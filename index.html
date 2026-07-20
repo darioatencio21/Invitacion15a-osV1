@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>You're Invited · XV Años</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a96e;
+  --gold-light:#e8d5b5;
+  --dusty-rose:#e8c4c4;
+  --light-pink:#f5e6e6;
+  --champagne:#f7f0e8;
+  --soft-black:#1a1a1a;
+  --muted:#6b5e5e;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:#fff;color:var(--soft-black);overflow-x:hidden}
+::selection{background:var(--dusty-rose);color:var(--soft-black)}
+img{max-width:100%;display:block}
+
+/* particles canvas */
+#particles-canvas{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+/* invite screen */
+#invite-screen{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#fff;
+  animation:fadeIn 1.2s ease-out forwards;
+}
+#invite-screen.exit{animation:fadeOut 1s ease-in forwards}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+
+.invite-content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:2rem;padding:0 1.5rem}
+.invite-label{
+  font-family:var(--serif);font-size:0.8rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);
+  animation:slideUp 1.2s 0.5s both ease-out;
+}
+.invite-name{
+  font-family:var(--serif);font-size:clamp(2.5rem,8vw,5rem);color:var(--soft-black);letter-spacing:0.04em;
+  animation:slideUp 1.2s 0.9s both ease-out;
+}
+.invite-btn-wrap{animation:fadeInUp 1s 1.6s both ease-out}
+.invite-btn{
+  position:relative;padding:1rem 3rem;
+  border:1px solid var(--gold);border-radius:999px;
+  font-family:var(--sans);font-size:0.8rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--soft-black);background:rgba(255,255,255,0.6);backdrop-filter:blur(8px);
+  cursor:pointer;overflow:hidden;transition:all 0.5s;
+}
+.invite-btn:hover{color:#fff;border-color:var(--gold)}
+.invite-btn::after{
+  content:'';position:absolute;inset:0;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform 0.5s ease-out;
+}
+.invite-btn:hover::after{transform:scaleX(1)}
+.invite-btn span{position:relative;z-index:10}
+
+.scroll-hint{
+  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+  animation:fadeInUp 1.5s 2.5s both;
+}
+.scroll-line{width:1px;height:3rem;background:var(--gold);margin:0 auto;animation:float 2s ease-in-out infinite}
+
+/* main content */
+#main-content{display:none;opacity:0}
+#main-content.show{display:block;animation:fadeIn 0.8s ease-out forwards}
+
+/* sections */
+section{padding:6rem 1.5rem;position:relative}
+@media(min-width:768px){section{padding:8rem 2rem}}
+
+.section-label{
+  font-family:var(--serif);font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;text-align:center;
+}
+.section-title{
+  font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);
+  color:var(--soft-black);text-align:center;margin-bottom:3rem;
+}
+
+/* hero */
+.hero{
+  height:100vh;min-height:700px;overflow:hidden;position:relative;
+  background:var(--light-pink);
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--light-pink),var(--dusty-rose),var(--champagne));
+  transform:translateY(0);will-change:transform;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 0%,transparent 60%,#fff 100%);
+}
+.hero-content{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 1.5rem;
+}
+.hero-name{
+  font-family:var(--serif);font-size:clamp(3rem,10vw,7rem);
+  color:#fff;text-shadow:0 4px 20px rgba(0,0,0,0.15);
+  animation:heroReveal 1.2s both ease-out;
+}
+.hero-meta{
+  display:flex;align-items:center;gap:1.5rem;margin-top:1rem;
+  animation:heroReveal 1.2s 0.4s both ease-out;
+}
+.hero-meta span{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.5rem);color:rgba(255,255,255,0.9);text-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.hero-meta .sep{width:1px;height:2rem;background:rgba(255,255,255,0.4)}
+.hero-meta .date{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.8)}
+
+@keyframes heroReveal{
+  from{opacity:0;transform:translateY(2rem);filter:blur(8px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+
+/* countdown */
+.countdown-section{background:linear-gradient(to bottom,#fff,var(--champagne))}
+.countdown-grid{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+@media(min-width:768px){.countdown-grid{gap:2rem}}
+.countdown-card{
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;transform:translateY(1.5rem);
+  transition:all 0.8s ease-out;
+}
+.countdown-card.show{opacity:1;transform:translateY(0)}
+.countdown-card .num{
+  width:5rem;height:6rem;display:flex;align-items:center;justify-content:center;
+  border-radius:1rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.4);box-shadow:0 8px 32px rgba(201,169,110,0.06);
+  font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.5rem);color:var(--soft-black);
+  position:relative;overflow:hidden;
+}
+@media(min-width:768px){.countdown-card .num{width:6rem;height:7rem}}
+.countdown-card .num .inner{
+  transition:all 0.3s ease-out;
+}
+.countdown-card .label{
+  margin-top:0.75rem;font-family:var(--sans);font-size:0.6rem;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* info */
+.info-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;max-width:60rem;margin:0 auto}
+@media(min-width:768px){.info-grid{grid-template-columns:1fr 1fr}}
+.info-card{
+  padding:2rem;border-radius:1rem;background:rgba(247,240,232,0.2);
+  border:1px solid rgba(201,169,110,0.1);
+  transition:all 0.5s;opacity:0;transform:translateY(2rem);filter:blur(4px);
+}
+.info-card.show{opacity:1;transform:translateY(0);filter:blur(0)}
+.info-card:hover{border-color:rgba(201,169,110,0.25)}
+.info-card svg{color:var(--gold);width:1.25rem;height:1.25rem;margin-bottom:0.5rem}
+.info-card .lbl{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.375rem}
+.info-card .val{font-family:var(--serif);font-size:1.1rem;color:var(--soft-black)}
+
+/* gallery */
+.gallery-section{background:rgba(247,240,232,0.1)}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:64rem;margin:0 auto}
+@media(min-width:768px){.gallery-grid{grid-template-columns:1fr 1fr 1fr;gap:1.5rem}}
+.gallery-item{
+  aspect-ratio:3/4;border-radius:1rem;overflow:hidden;cursor:pointer;
+  opacity:0;transform:translateY(2rem);
+  transition:all 0.8s ease-out;position:relative;
+  box-shadow:0 8px 24px rgba(201,169,110,0.06);
+}
+.gallery-item.show{opacity:1;transform:translateY(0)}
+.gallery-item .thumb{
+  width:100%;height:100%;background-size:cover;background-position:center;
+  transition:transform 0.7s ease-out;
+}
+.gallery-item:hover .thumb{transform:scale(1.05)}
+.gallery-item .overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;
+  transition:all 0.5s;
+}
+.gallery-item:hover .overlay{background:rgba(0,0,0,0.08)}
+.gallery-item .overlay span{color:#fff;font-size:0.75rem;letter-spacing:0.1em;opacity:0;transition:opacity 0.5s}
+.gallery-item:hover .overlay span{opacity:1}
+
+/* lightbox */
+.lightbox{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:1.5rem;
+}
+.lightbox.open{display:flex}
+.lightbox-inner{
+  max-width:48rem;width:100%;aspect-ratio:3/4;border-radius:1rem;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);
+  animation:lightboxIn 0.5s ease-out;
+}
+@keyframes lightboxIn{from{opacity:0;transform:scale(0.92);filter:blur(8px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+.lightbox-inner .lb-img{width:100%;height:100%;background-size:cover;background-position:center}
+.lightbox-close{
+  position:absolute;top:2rem;right:2rem;
+  background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;
+  font-size:1.5rem;transition:color 0.3s;
+}
+.lightbox-close:hover{color:#fff}
+
+/* rsvp */
+.rsvp-section{background:#fff}
+.rsvp-form{max-width:32rem;margin:0 auto}
+.form-group{margin-bottom:2rem}
+.form-group label{
+  display:block;font-family:var(--sans);font-size:0.6rem;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;
+}
+.form-group input,.form-group textarea{
+  width:100%;padding:0.75rem 0;background:transparent;
+  border:none;border-bottom:1px solid rgba(201,169,110,0.2);
+  font-family:var(--serif);font-size:1.1rem;color:var(--soft-black);
+  outline:none;transition:border-color 0.3s;
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{resize:none;min-height:4rem}
+.radio-group{display:flex;gap:1rem}
+.radio-btn{
+  padding:0.75rem 2rem;border-radius:999px;border:1px solid rgba(201,169,110,0.2);
+  background:transparent;font-family:var(--sans);font-size:0.85rem;color:var(--muted);
+  cursor:pointer;transition:all 0.3s;
+}
+.radio-btn.active{background:var(--soft-black);color:#fff;border-color:var(--soft-black)}
+.submit-btn{
+  width:100%;padding:1rem;border-radius:999px;border:none;
+  background:var(--soft-black);color:#fff;
+  font-family:var(--sans);font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.5s;
+}
+.submit-btn:hover{background:var(--gold)}
+
+.thanks-screen{text-align:center;padding:4rem 0;display:none}
+.thanks-screen.show{display:block;animation:fadeIn 0.8s ease-out}
+.thanks-screen h2{font-family:var(--serif);font-size:3rem;color:var(--soft-black);margin-bottom:1rem}
+.thanks-screen p{font-family:var(--sans);color:var(--muted);font-size:0.9rem}
+
+/* footer */
+.footer{padding:4rem 1.5rem;text-align:center;background:rgba(247,240,232,0.1)}
+.footer p{font-family:var(--serif);font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted)}
+.footer .line{width:1px;height:2rem;background:var(--gold);margin:1.5rem auto 0}
+
+/* animations */
+@keyframes slideUp{from{opacity:0;transform:translateY(2rem)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(1rem)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+.reveal{opacity:0;transform:translateY(2rem);filter:blur(4px);transition:all 0.8s ease-out}
+.reveal.show{opacity:1;transform:translateY(0);filter:blur(0)}
+</style>
+</head>
+<body>
+
+<!-- particles -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- invite screen -->
+<div id="invite-screen">
+  <div class="invite-content">
+    <p class="invite-label">You're Invited</p>
+    <h1 class="invite-name">[Nombre]</h1>
+    <div class="invite-btn-wrap">
+      <button class="invite-btn" onclick="openInvitation()"><span>Open Invitation</span></button>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div></div>
+</div>
+
+<!-- main content -->
+<div id="main-content">
+  <!-- hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-name">[Nombre]</h1>
+      <div class="hero-meta">
+        <span>XV</span>
+        <div class="sep"></div>
+        <span class="date">[Fecha]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- countdown -->
+  <section class="countdown-section">
+    <p class="section-label">Faltan</p>
+    <h2 class="section-title">Para el gran día</h2>
+    <div class="countdown-grid" id="countdown-grid">
+      <div class="countdown-card"><div class="num"><span class="inner" id="days">00</span></div><span class="label">Días</span></div>
+      <div class="countdown-card"><div class="num"><span class="inner" id="hours">00</span></div><span class="label">Horas</span></div>
+      <div class="countdown-card"><div class="num"><span class="inner" id="minutes">00</span></div><span class="label">Min</span></div>
+      <div class="countdown-card"><div class="num"><span class="inner" id="seconds">00</span></div><span class="label">Seg</span></div>
+    </div>
+  </section>
+
+  <!-- info -->
+  <section>
+    <p class="section-label">Detalles</p>
+    <h2 class="section-title">El evento</h2>
+    <div class="info-grid" id="info-grid">
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <p class="lbl">Fecha</p>
+        <p class="val">[Fecha del Evento]</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <p class="lbl">Hora</p>
+        <p class="val">[Hora del Evento]</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p class="lbl">Lugar</p>
+        <p class="val">[Dirección / Salón]</p>
+      </div>
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <p class="lbl">Dress Code</p>
+        <p class="val">[Código de Vestimenta]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- gallery -->
+  <section class="gallery-section">
+    <p class="section-label">Galería</p>
+    <h2 class="section-title">Recuerdos</h2>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </section>
+
+  <!-- rsvp -->
+  <section class="rsvp-section">
+    <p class="section-label">RSVP</p>
+    <h2 class="section-title">Confirma tu asistencia</h2>
+    <div class="rsvp-form">
+      <div id="rsvp-form">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="name" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label>¿Asistirás?</label>
+          <div class="radio-group">
+            <button class="radio-btn" data-value="Sí" onclick="selectAttendance(this)">Sí</button>
+            <button class="radio-btn" data-value="No" onclick="selectAttendance(this)">No</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Acompañantes</label>
+          <input type="number" id="guests" min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea id="message" placeholder="Escribe algo..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitRSVP()">Confirm Attendance</button>
+      </div>
+      <div class="thanks-screen" id="thanks-screen">
+        <h2>¡Gracias!</h2>
+        <p>Hemos recibido tu confirmación</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Con amor, [Nombre]</p>
+    <div class="line"></div>
+  </footer>
+</div>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <div class="lb-img" id="lb-img"></div>
+  </div>
+</div>
+
+<script>
+// ---- particles ----
+(function(){
+  const c=document.getElementById('particles-canvas'),x=c.getContext('2d');
+  let p=[],w,h;
+  function r(){w=c.width=innerWidth;h=c.height=innerHeight}
+  function i(){r();p=Array.from({length:40},()=>({x:Math.random()*w,y:Math.random()*h,s:Math.random()*2.5+0.5,dx:(Math.random()-.5)*0.3,dy:(Math.random()-.5)*0.3,o:Math.random()*0.5+0.1}))}
+  function a(){x.clearRect(0,0,w,h);p.forEach(q=>{q.x+=q.dx;q.y+=q.dy;if(q.x<0)q.x=w;if(q.x>w)q.x=0;if(q.y<0)q.y=h;if(q.y>h)q.y=0;x.beginPath();x.arc(q.x,q.y,q.s,0,Math.PI*2);x.fillStyle=`rgba(201,169,110,${q.o})`;x.fill()});requestAnimationFrame(a)}
+  i();a();addEventListener('resize',r);
+})();
+
+// ---- scroll reveal ----
+function revealOnScroll(){
+  document.querySelectorAll('.reveal,.info-card,.countdown-card,.gallery-item').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight-100)el.classList.add('show');
+  });
+}
+window.addEventListener('scroll',revealOnScroll);
+
+// ---- open invitation ----
+function openInvitation(){
+  const s=document.getElementById('invite-screen');
+  s.classList.add('exit');
+  setTimeout(()=>{
+    s.style.display='none';
+    document.getElementById('main-content').classList.add('show');
+    revealOnScroll();
+    startCountdown();
+    setTimeout(()=>{
+      document.querySelectorAll('.info-card').forEach((el,i)=>setTimeout(()=>el.classList.add('show'),i*120));
+      document.querySelectorAll('.countdown-card').forEach((el,i)=>setTimeout(()=>el.classList.add('show'),i*100));
+      document.querySelectorAll('.gallery-item').forEach((el,i)=>setTimeout(()=>el.classList.add('show'),i*80));
+    },200);
+  },800);
+}
+
+// ---- countdown ----
+let countdownInterval;
+function startCountdown(){
+  const t=new Date();t.setDate(t.getDate()+30);
+  function update(){
+    const d=t-Date.now();
+    if(d<=0)return;
+    document.getElementById('days').textContent=String(Math.floor(d/86400000)).padStart(2,'0');
+    document.getElementById('hours').textContent=String(Math.floor((d%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('minutes').textContent=String(Math.floor((d%3600000)/60000)).padStart(2,'0');
+    document.getElementById('seconds').textContent=String(Math.floor((d%60000)/1000)).padStart(2,'0');
+  }
+  update();countdownInterval=setInterval(update,1000);
+}
+
+// ---- gallery ----
+const gradients=['linear-gradient(135deg,#f5e6e6,#e8c4c4)','linear-gradient(135deg,#f7f0e8,#f5e6e6)','linear-gradient(135deg,#e8c4c4,#f7f0e8)','linear-gradient(135deg,#f5e6e6,#e8d5b5)','linear-gradient(135deg,#f7f0e8,#e8c4c4)','linear-gradient(135deg,#e8d5b5,#f5e6e6)'];
+const grid=document.getElementById('gallery-grid');
+for(let i=0;i<6;i++){
+  const div=document.createElement('div');div.className='gallery-item';
+  div.innerHTML=`<div class="thumb" style="background:${gradients[i]}"></div><div class="overlay"><span>Ver foto</span></div>`;
+  div.onclick=()=>openLightbox(i);
+  grid.appendChild(div);
+}
+
+function openLightbox(i){
+  document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lb-img').style.background=gradients[i];
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
+
+// ---- rsvp ----
+let attendance='';
+function selectAttendance(el){
+  document.querySelectorAll('.radio-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');attendance=el.dataset.value;
+}
+function submitRSVP(){
+  const name=document.getElementById('name').value;
+  const email=document.getElementById('email').value;
+  if(!name||!email||!attendance)return alert('Por favor completa los campos requeridos');
+  document.getElementById('rsvp-form').style.display='none';
+  document.getElementById('thanks-screen').classList.add('show');
+  confettiEffect();
+}
+function confettiEffect(){
+  const colors=['#c9a96e','#e8c4c4','#f5e6e6','#f7f0e8'];
+  let end=Date.now()+3000;
+  !function f(){
+    for(let i=0;i<3;i++){
+      const e=document.createElement('div');
+      Object.assign(e.style,{
+        position:'fixed',zIndex:300,pointerEvents:'none',
+        width:'6px',height:'6px',borderRadius:'50%',
+        background:colors[Math.floor(Math.random()*colors.length)],
+        left:Math.random()*100+'vw',top:'-10px',
+        opacity:0.8,
+      });
+      document.body.appendChild(e);
+      e.animate([
+        {transform:'translateY(0) rotate(0deg)',opacity:1},
+        {transform:`translateY(${window.innerHeight+20}px) rotate(${Math.random()*720}deg)`,opacity:0}
+      ],{duration:2000+Math.random()*1000,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>e.remove();
+    }
+    if(Date.now()<end)requestAnimationFrame(f);
+  }();
+}
+
+// ---- parallax hero ----
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  const bg=document.getElementById('hero-bg');
+  if(bg)bg.style.transform=`translateY(${s*0.3}px)`;
+});
+</script>
+</body>
+</html>
