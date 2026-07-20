@@ -3,8 +3,10 @@
 @theme inline {
   --color-background: #ffffff;
   --color-foreground: #1a1a1a;
-  --color-dusty-rose: #e8c4c4;
-  --color-light-pink: #f5e6e6;
+  --color-emerald: #0d7a5f;
+  --color-emerald-light: #4a9e86;
+  --color-sage: #c9dac4;
+  --color-mint: #e2efe2;
   --color-champagne: #f7f0e8;
   --color-gold: #c9a96e;
   --color-gold-light: #e8d5b5;
@@ -12,17 +14,19 @@
   --color-muted-text: #6b5e5e;
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-script: "Great Vibes", cursive;
 }
 
 body {
   background: #ffffff;
   color: var(--color-soft-black);
   font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: #e8c4c4;
-  color: #1a1a1a;
+  background: var(--color-sage);
+  color: var(--color-soft-black);
 }
 
 html.lenis {
@@ -39,4 +43,29 @@ html.lenis {
 
 .lenis-stopped {
   overflow: hidden;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 0.8; transform: scale(1) rotate(180deg); }
 }

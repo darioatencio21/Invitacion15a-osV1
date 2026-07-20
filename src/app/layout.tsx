@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -14,9 +14,29 @@ const inter = Inter({
   display: "swap",
 });
 
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-script",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "You're Invited",
-  description: "Celebración de 15 Años",
+  title: "You're Invited · XV Años",
+  description: "Celebración de 15 Años — Te esperamos para compartir este día especial",
+  openGraph: {
+    title: "You're Invited · XV Años",
+    description: "Celebración de 15 Años — Te esperamos para compartir este día especial",
+    type: "website",
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#ffffff",
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({
@@ -25,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="es" className={`${playfair.variable} ${inter.variable} ${greatVibes.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );
