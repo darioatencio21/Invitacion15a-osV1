@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación · XV Años</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: #1a0f0a;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background: linear-gradient(145deg, #fdf6f0 0%, #fce9df 100%);
+      border-radius: 32px;
+      padding: 48px 32px;
+      text-align: center;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(212,175,55,0.10) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .ornament {
+      font-size: 28px;
+      color: #b8962e;
+      letter-spacing: 8px;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: #b8962e;
+      font-weight: 400;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: #d4af37;
+      margin: 12px auto 0;
+    }
+
+    .name {
+      font-size: clamp(36px, 8vw, 56px);
+      font-weight: 400;
+      color: #2a1a12;
+      margin: 16px 0 8px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+    }
+
+    .age {
+      font-size: 48px;
+      color: #d4af37;
+      font-weight: 400;
+      margin-bottom: 24px;
+      font-family: 'Georgia', serif;
+    }
+
+    .divider {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin: 0 auto 24px;
+    }
+
+    .info {
+      color: #5a3e32;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .info strong {
+      color: #2a1a12;
+    }
+
+    .detail {
+      color: #7a5a4a;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .countdown-item {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 12px;
+      padding: 12px 8px;
+      min-width: 64px;
+      backdrop-filter: blur(4px);
+    }
+
+    .countdown-item span {
+      display: block;
+      font-size: 24px;
+      font-weight: 400;
+      color: #2a1a12;
+      font-family: 'Georgia', serif;
+    }
+
+    .countdown-item label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #b8962e;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 14px 48px;
+      background: linear-gradient(135deg, #d4af37, #b8962e);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.4);
+    }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 12px;
+      color: #9a7a6a;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 32px 20px; }
+      .countdown { gap: 10px; }
+      .countdown-item { min-width: 56px; padding: 10px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="ornament">&#9830; &#9829; &#9830;</div>
+    <div class="title">Celebración de 15 Años</div>
+
+    <h1 class="name">[Nombre de la Cumpleañera]</h1>
+    <div class="age">XV</div>
+
+    <div class="divider"></div>
+
+    <p class="info"><strong>Fecha</strong> &nbsp;—&nbsp; [Fecha del Evento]</p>
+    <p class="info"><strong>Hora</strong> &nbsp;—&nbsp; [Hora del Evento]</p>
+    <p class="info"><strong>Lugar</strong> &nbsp;—&nbsp; [Dirección / Salón]</p>
+
+    <p class="detail">"Y vivieron felices para siempre… comienza aquí"</p>
+
+    <div class="divider"></div>
+
+    <p class="info" style="font-size:14px; color:#7a5a4a; margin-bottom:4px;">
+      ¡Falta muy poco!
+    </p>
+
+    <div class="countdown">
+      <div class="countdown-item">
+        <span id="days">--</span>
+        <label>Días</label>
+      </div>
+      <div class="countdown-item">
+        <span id="hours">--</span>
+        <label>Horas</label>
+      </div>
+      <div class="countdown-item">
+        <span id="minutes">--</span>
+        <label>Min</label>
+      </div>
+      <div class="countdown-item">
+        <span id="seconds">--</span>
+        <label>Seg</label>
+      </div>
+    </div>
+
+    <a href="#" class="btn">Confirmar Asistencia</a>
+
+    <p class="footer">Te esperamos para celebrar este día mágico</p>
+  </div>
+
+  <script>
+    (function() {
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 30);
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          document.getElementById('days').textContent = '00';
+          document.getElementById('hours').textContent = '00';
+          document.getElementById('minutes').textContent = '00';
+          document.getElementById('seconds').textContent = '00';
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
+</body>
+</html>
